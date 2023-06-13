@@ -57,9 +57,9 @@ def calculation(dist_type, **kwargs):
     if tol < 0:
         st.write('### :red[USL must be greater than LSL!]')
 
-    cp = tol / (6 * samples.std())
+    cp = tol / (6 * samples.std(ddof=1))
 
-    cpk = min((samples.mean() - lsl), (usl - samples.mean())) / (3 * samples.std())
+    cpk = min((samples.mean() - lsl), (usl - samples.mean())) / (3 * samples.std(ddof=1))
 
 
     col4 , col5 = st.columns(2)
@@ -110,9 +110,9 @@ col1, col2, col3 = st.columns(3)
 with col1:
     with st.form(key='limits'):
         st.markdown('### Limits \n will be used to calculate Cp and Cpk')
-        lsl= st.number_input(label='LSL')
+        lsl= st.number_input(label='LSL', format='%.3f')
         input_dict['lsl'] = lsl
-        usl= st.number_input(label='USL')
+        usl= st.number_input(label='USL', format='%.3f')
         input_dict['usl'] = usl
         submit_button = st.form_submit_button(label='Submit')
 
@@ -136,25 +136,25 @@ with col3:
         st.markdown('### Parameters')
 
         if 'mean' in param_list:
-            mean = st.number_input(label='Mean')
+            mean = st.number_input(label='Mean', format='%.3f')
             input_dict['mean'] = mean
             st.write('for centered process: mean = ', round((usl+lsl)/2, 3))
 
         if 'std' in param_list:
             std_info_3 = round((usl - lsl) / 6, 3)
             std_info_4 = round((usl - lsl) / 8, 3)
-            std = st.number_input(label='Standard Deviation')
+            std = st.number_input(label='Standard Deviation', format='%.3f')
             st.write('for $±3 \sigma$ process: std = ', std_info_3)
             st.write('for $±4 \sigma$ process: std = ', std_info_4)
             input_dict['std'] = std
 
         if 'low' in param_list:
-            low = st.number_input(label='Lower Limit')
+            low = st.number_input(label='Lower Limit', format='%.3f')
             st.write('Lower limit of the uniform distribution')
             input_dict['low'] = low
 
         if 'high' in param_list:
-            high = st.number_input(label='Upper Limit')
+            high = st.number_input(label='Upper Limit', format='%.3f')
             st.write('Upper limit of the uniform distribution')
             input_dict['high'] = high
 
